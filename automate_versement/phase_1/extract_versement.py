@@ -11,8 +11,8 @@ from openpyxl.utils.dataframe import dataframe_to_rows
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 
 
-fi = "C:/Users/elmaa/OneDrive/Bureau/rapport_livraison/Livraison_rapport.xlsx"
-
+#fi = "C:/Users/elmaa/OneDrive/Bureau/rapport_livraison/Livraison_rapport.xlsx"
+fi = "C:/Users/LAMIA/Desktop/rapport_versement/Versement_rapport.xlsx"
 
 def remove_file(file):
     try:
@@ -143,10 +143,13 @@ print(df)
 
 x1 = len(table_j_1) + 5
 
-with pd.ExcelWriter("C:/Users/elmaa/OneDrive/Bureau/rapport_livraison/Livraison_rapport.xlsx") as writer:
+#with pd.ExcelWriter("C:/Users/elmaa/OneDrive/Bureau/rapport_livraison/Livraison_rapport.xlsx") as writer:
+with pd.ExcelWriter("C:/Users/LAMIA/Desktop/rapport_versement/Versement_rapport.xls") as writer:
     table_4.to_excel(writer , sheet_name="Sheet1", startcol=0)
     table_j_1.to_excel(writer , sheet_name="Sheet1", startrow=2, startcol=1)
     df.to_excel(writer , sheet_name="Sheet1", startrow=x1, startcol=1)
+
+
 
 
 
