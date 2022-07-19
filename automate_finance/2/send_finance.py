@@ -19,6 +19,7 @@ yesterday = str(yesterday)
 def send():
     fromaddr = "z.elmaataoui@labelvie.ma"
     toaddr = "a.benkira@labelvie.ma", "m.abid@labelvie.ma", "b.alfaidy@labelvie.ma", "h.tadlaoui@labelvie.ma", "l.ezzahraoui@labelvie.ma", "c.elannab@labelvie.ma", "a.ghayour@labelvie.ma"
+    #toaddr ="a.azzal-digiup@labelvie.ma",
     msg = MIMEMultipart()
     msg['From'] = fromaddr
     msg['To'] = ', '.join(toaddr)
@@ -34,8 +35,10 @@ Bonne réception,
 Zakariyae 
 """.format(yesterday)
     msg.attach(MIMEText(body, 'plain'))
-    filename = "Financial_rapport - {}.csv".format(yesterday)
-    attachment = open("C:/Users/elmaa/OneDrive/Bureau/rapport_financier/Financial_rapport.csv", "rb")
+    #filename = "Financial_rapport - {}.csv".format(yesterday)
+    filename = "Financial_rapport - {}.xls".format(yesterday)
+    #attachment = open("C:/Users/elmaa/OneDrive/Bureau/rapport_financier/Financial_rapport.csv", "rb")
+    attachment = open("C:/Users/LAMIA/Desktop/rapport_financier/Financial_rapport.xls", "rb")
     p = MIMEBase('application', 'octet-stream')
     p.set_payload((attachment).read())
     encoders.encode_base64(p)
