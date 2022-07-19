@@ -159,3 +159,4 @@ with pd.ExcelWriter("C:/Users/elmaa/OneDrive/Bureau/rapport_financier/Financial_
     Labelvie_df.to_excel(writer, sheet_name="Sheet1", startrow=x8 + x7 + x6 + x5 + x4 + + x3 + x2 + x1 + x0, startcol=0)
 
     one_line.to_excel(writer, sheet_name="Sheet1", startrow=x9 + x8 + x7 + x6 + x5 + x4 + + x3 + x2 + x1 + x0, startcol=0)
+
