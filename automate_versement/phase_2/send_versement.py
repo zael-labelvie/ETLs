@@ -1,4 +1,3 @@
-
 import locale
 import datetime
 from datetime import date
