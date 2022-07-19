@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/etl_labelvie.iml" filepath="$PROJECT_DIR$/.idea/etl_labelvie.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../etl_labelvie_2/.idea/etl_labelvie_2.iml" filepath="$PROJECT_DIR$/../etl_labelvie_2/.idea/etl_labelvie_2.iml" />
     </modules>
   </component>
 </project>
