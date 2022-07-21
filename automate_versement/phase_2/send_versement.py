@@ -18,8 +18,8 @@ yesterday = str(yesterday)
 
 def send():
     fromaddr = "z.elmaataoui@labelvie.ma"
-    #toaddr = "h.ramzi@labelvie.ma", "pointprodelivery@gmail.com", "A.zouheir@labelvie.ma", "badii.hachguer@gmail.com"
-    toaddr = "a.azzal-digiup@labelvie.ma",
+    toaddr = "h.ramzi@labelvie.ma", "pointprodelivery@gmail.com", "A.zouheir@labelvie.ma", "badii.hachguer@gmail.com", "k.naciri@labelvie.ma"
+    #toaddr = "a.azzal-digiup@labelvie.ma",
     msg = MIMEMultipart()
     msg['From'] = fromaddr
     msg['To'] = ', '.join(toaddr)
