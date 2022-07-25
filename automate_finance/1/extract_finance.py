@@ -6,7 +6,7 @@ import os
 
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 
-fi = "C:/Users/LAMIA/Desktop/rapport_financier/Financial_rapport.xlsx"
+fi = "C:/Users/LAMIA/Desktop/rapport_financier/Financial_rapport.xls"
 
 
 def remove_file(file):
@@ -111,7 +111,7 @@ data = data[data.order_state != 'canceled']
 # table j-1
 yesterday = date.today() - datetime.timedelta(days=1)
 yesterday = str(yesterday)
-# yesterday = "2022-07-17"  # Utiliser pour le Weekend
+#yesterday = "2022-07-24"  # Utiliser pour le Weekend
 table_j_1 = data.loc[(data['delivery_date_end'] == yesterday)]
 table_j_1 = table_j_1[['delivery_date_end', 'number',
                        'order_state', 'payment_method',
@@ -194,3 +194,11 @@ with pd.ExcelWriter("C:/Users/LAMIA/Desktop/rapport_financier/Financial_rapport.
                       startcol=0)
     one_line.to_excel(writer, sheet_name="Sheet1", startrow=x9 + x8 + x7 + x6 + x5 + x4 + + x3 + x2 + x1 + x0,
                       startcol=0)
+
+
+p =str(len(table_j_1))
+print(p)
+file_object = open('C:/Users/LAMIA/Desktop/rapport_financier/size.csv', 'a')
+file_object.write("\n")
+file_object.write(p)
+file_object.close()

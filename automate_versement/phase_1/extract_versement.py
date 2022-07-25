@@ -112,7 +112,8 @@ data = data[data.order_state != 'canceled']
 # table j-1
 yesterday = date.today() - datetime.timedelta(days=1)
 yesterday = str(yesterday)
-# yesterday = "2022-06-25"  # Utiliser pour le Weekend
+#yesterday = "2022-07-23"  # Utiliser pour le Weekend
+
 table_j_1 = data.loc[(data['delivery_date_end'] == yesterday)]
 table_j_1 = table_j_1[['delivery_date_end', 'number',
                        'order_state', 'payment_method',
@@ -137,9 +138,8 @@ table_j_1['delivery_date_end'] = table_j_1['delivery_date_end'].astype(str)
 table_j_1 = table_j_1.reset_index(drop=True)
 # Export Data
 print(Etakada_df_1)
-df =  Etakada_df_1.reset_index().pivot('Magasin', 'payment_method', 'Total')
-df = df.fillna(0)
-print(df)
+
+df =  Etakada_df_1.reset_index().pivot('Magasin', 'payment_method', 'Total').fillna(0)
 
 x1 = len(table_j_1) + 5
 
@@ -147,10 +147,18 @@ x1 = len(table_j_1) + 5
 with pd.ExcelWriter("C:/Users/LAMIA/Desktop/rapport_versement/Versement_rapport.xls") as writer:
     table_4.to_excel(writer , sheet_name="Sheet1", startcol=0)
     table_j_1.to_excel(writer , sheet_name="Sheet1", startrow=2, startcol=1)
-    df.to_excel(writer , sheet_name="Sheet1", startrow=x1, startcol=1)
+    try:
+        df.to_excel(writer , sheet_name="Sheet1", startrow=x1, startcol=1)
+    except:
+        pass
 
 
-
+p =str(len(table_j_1))
+print(p)
+file_object = open('C:/Users/LAMIA/Desktop/rapport_versement/size.csv', 'a')
+file_object.write("\n")
+file_object.write(p)
+file_object.close()
 
 
 

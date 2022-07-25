@@ -1,19 +1,19 @@
 import locale
 import datetime
 from datetime import date
-
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
+import pandas as pd
 
 
 ########################################################################################################## SEND EMAIL
 yesterday = date.today() - datetime.timedelta(days=1)
 yesterday = str(yesterday)
-#yesterday = "2022-07-17"
+#yesterday = "2022-07-24"
 
 
 def send():
@@ -50,11 +50,24 @@ Zakariyae
     text = msg.as_string()
     s.sendmail(fromaddr, toaddr, text)
     s.quit()
-send()
 
 def fin_3():
     for i in range(10):
         print(".................................................. Done {}".format(i))
     print(".................................................. Done")
 
-fin_3()
+
+
+r = pd.read_csv(r"C:/Users/LAMIA/Desktop/rapport_financier/size.csv")
+data = pd.DataFrame(r)
+value = data.iloc[-1,0]
+if value != 0:
+    send()
+    fin_3()
+else:
+    print("NB : Le tableau est vide, nous ne pouvons pas envoyer le fichier !!!!!!!!!!!!")
+
+
+
+
+
