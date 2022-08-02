@@ -13,12 +13,12 @@ locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 ########################################################################################################## SEND EMAIL
 yesterday = date.today() - datetime.timedelta(days=1)
 yesterday = str(yesterday)
-#yesterday = "2022-07-24"
+#yesterday = "2022-07-29"
 
 
 def send():
     fromaddr = "z.elmaataoui@labelvie.ma"
-    toaddr = "h.ramzi@labelvie.ma", "pointprodelivery@gmail.com", "A.zouheir@labelvie.ma", "badii.hachguer@gmail.com", "k.naciri@labelvie.ma"
+    toaddr = "h.ramzi@labelvie.ma", "pointprodelivery@gmail.com", "A.zouheir@labelvie.ma", "badii.hachguer@gmail.com", "k.naciri@labelvie.ma", "a.benkira@labelvie.ma"
     #toaddr = "a.azzal-digiup@labelvie.ma",
     msg = MIMEMultipart()
     msg['From'] = fromaddr
@@ -55,7 +55,6 @@ def fin_3():
     for i in range(10):
         print(".................................................. Done {}".format(i))
     print(".................................................. Done")
-
 
 r = pd.read_csv(r"C:/Users/LAMIA/Desktop/rapport_versement/size.csv")
 data = pd.DataFrame(r)

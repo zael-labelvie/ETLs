@@ -111,7 +111,7 @@ data = data[data.order_state != 'canceled']
 # table j-1
 yesterday = date.today() - datetime.timedelta(days=1)
 yesterday = str(yesterday)
-#yesterday = "2022-07-24"  # Utiliser pour le Weekend
+yesterday = "2022-07-29"  # Utiliser pour le Weekend
 table_j_1 = data.loc[(data['delivery_date_end'] == yesterday)]
 table_j_1 = table_j_1[['delivery_date_end', 'number',
                        'order_state', 'payment_method',
