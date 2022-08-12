@@ -7,8 +7,6 @@ import os
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 
 fi = "C:/Users/LAMIA/Desktop/rapport_financier/Financial_rapport.xls"
-
-
 def remove_file(file):
     try:
         os.remove(fi)
@@ -64,9 +62,29 @@ df_Financial_New_Order_1492 = {'order_id': '2904', 'picking_finish_at': '2022-06
                                'non_product_value': '0.0', 'shipping_value': '0.0', 'manipulation_value': '0.0',
                                'preparation_fee': '0.0'}
 
+df_Financial_New_Order_1015 = {'customer_id': '155', 'order_id': '1347', 'picking_finish_at': '2022-04-26 20:00:00',
+                               'delivery_date_end': '2022-04-26 20:00:00', 'number': '1015', 'order_state': 'complete',
+                               'payment_method': 'online_payment', 'amount_per_method': '283.51',
+                               'store_internal_name': 'Carrefour Market Panoramique', 'store_external_id': '166',
+                               'vendor_name': 'Carrefour Supermarket', 'product_price': '134.24',
+                               'product_price_without_vat': '134.24', 'vat': '0.0', 'discount_total': '0.00',
+                               'shipping_discount': '30.0', 'original_shipping_amount': '30.0',
+                               'non_product_value': '0.0 ', 'shipping_value': ' 0.0 ', 'manipulation_value': ' 0.0 ',
+                               'preparation_fee': ' 0.0 '}
+df_Financial_New_Order_1089 = {'customer_id': '174', 'order_id': '1435', 'picking_finish_at': '2022-03-14 11:05:49',
+                               'delivery_date_end': '2022-03-14 11:05:49', 'number': '1089', 'order_state': 'complete',
+                               'payment_method': 'online_payment', 'amount_per_method': '202.18',
+                               'store_internal_name': 'Carrefour Market Panoramique', 'store_external_id': '166',
+                               'vendor_name': 'Carrefour Supermarket', 'product_price': '58.18',
+                               'product_price_without_vat': '202.18', 'vat': '0.0', 'discount_total': '0.00',
+                               'shipping_discount': '30.0', 'original_shipping_amount': '30.0',
+                               'non_product_value': '0.0 ', 'shipping_value': ' 0.0 ', 'manipulation_value': ' 0.0 ',
+                               'preparation_fee': ' 0.0 '}
+
 data = data.append(df_Financial_New_Order_1491, ignore_index=True)
 data = data.append(df_Financial_New_Order_1492, ignore_index=True)
-
+data = data.append(df_Financial_New_Order_1015, ignore_index=True)
+data = data.append(df_Financial_New_Order_1089, ignore_index=True)
 
 def fx(x):
     if x['picking_finish_at'] == 'nan':
@@ -111,7 +129,7 @@ data = data[data.order_state != 'canceled']
 # table j-1
 yesterday = date.today() - datetime.timedelta(days=1)
 yesterday = str(yesterday)
-yesterday = "2022-07-29"  # Utiliser pour le Weekend
+#yesterday = "2022-07-29"  # Utiliser pour le Weekend
 table_j_1 = data.loc[(data['delivery_date_end'] == yesterday)]
 table_j_1 = table_j_1[['delivery_date_end', 'number',
                        'order_state', 'payment_method',
