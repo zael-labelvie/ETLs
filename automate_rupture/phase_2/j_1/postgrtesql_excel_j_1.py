@@ -4,13 +4,9 @@ import datetime
 from datetime import date
 import os
 
-# table j-1
-yesterday = date.today() - datetime.timedelta(days=1)
-yesterday = str(yesterday)
-#yesterday = "2022-08-03"  # Utiliser pour le Weekend
-
-
-fi = "C:/Users/LAMIA/Desktop/rapport_rupture/Etat Rupture Journalier {}.xls".format(yesterday)
+yesterday_del = date.today() - datetime.timedelta(days=2)
+yesterday_del = str(yesterday_del)
+fi = "C:/Users/LAMIA/Desktop/rapport_rupture/Etat Rupture Journalier {}.xls".format(yesterday_del)
 def remove_file(file):
     try:
         os.remove(fi)
@@ -19,6 +15,14 @@ def remove_file(file):
     else:
         print("File is deleted successfully")
 remove_file(fi)
+
+
+
+# table j-1
+yesterday = date.today() - datetime.timedelta(days=1)
+yesterday = str(yesterday)
+#yesterday = "2022-08-03"  # Utiliser pour le Weekend
+
 
 engine = create_engine('postgresql://squaduser:admin@172.16.3.116:5432/postgres')
 
