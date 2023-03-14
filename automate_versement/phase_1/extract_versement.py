@@ -30,6 +30,10 @@ remove_file(fi)
 dat = pd.read_csv(
     'https://redash-ro-live.bringo.ro/api/queries/23/results.csv?api_key=geCGwjb5UX3vj5cWnFpSlwG7guEZv7aYpfybRUnN')
 data = pd.DataFrame(dat)
+
+data = data[data.order_state != 'canceled']
+data = data[data.order_state != 'paid']
+
 # delete order_test
 order_test = [1802, 1218, 605, 599, 592, 584, 581, 580, 578, 559, 1191, 1189, 1184, 1183, 1182, 1154, 1146, 1142, 1136, 1133,
               1077, 1075, 1068, 1067, 1066, 1065, 1064, 1063, 1062, 1059, 1057, 1054, 1052, 1049, 1048, 1047, 1043,
@@ -37,7 +41,7 @@ order_test = [1802, 1218, 605, 599, 592, 584, 581, 580, 578, 559, 1191, 1189, 11
               967, 960, 961, 962, 968, 967, 969, 975, 977, 979, 1235, 1138, 1137, 1134, 1122, 1070, 1045, 1061, 1060,
               1218, 1191, 1184, 1183, 1182, 1154, 1148, 1146, 1142, 1133, 1134, 1136, 1137, 1138, 1077, 1075, 1070,
               1068, 1067, 1066, 1065, 1064, 1063, 1062, 1060, 1059, 1047, 1057, 1054, 1053, 1052, 1050, 1049, 1048,
-              1045, 1044, 1043, 1042, 1041, 1040, 1039, 1035, 1033, 1032, 1031, 1016, 982, 983, 984, 1116, 1702, 1719]
+              1045, 1044, 1043, 1042, 1041, 1040, 1039, 1035, 1033, 1032, 1031, 1016, 982, 983, 984, 1116, 1702, 1719,2227]
 for i in order_test:
     data = data[data.number != i]
 
@@ -77,6 +81,13 @@ def fx(x):
     else:
         return x['picking_finish_at']
 
+def Sx(x):
+    if x['delivery_date_end'] == 'nan':
+        return x['picking_finish_at']
+
+    else:
+        return x['delivery_date_end']
+
 
 data['order_id'] = data['order_id'].astype(int)
 data['number'] = data['number'].astype(int)
@@ -95,12 +106,17 @@ data['manipulation_value'] = data['manipulation_value'].astype(float)
 data['preparation_fee'] = data['preparation_fee'].astype(float)
 
 data['picking_finish_at'] = data.apply(lambda x: fx(x), axis=1)
+data['delivery_date_end'] = data.apply(lambda x: Sx(x), axis=1)
 
 data['picking_finish_at'] = data['picking_finish_at'].apply(lambda row: row.replace(row[-8:], ""))
 data['delivery_date_end'] = data['delivery_date_end'].apply(lambda row: row.replace(row[-8:], ""))
 
 data['picking_finish_at'] = data['picking_finish_at'].apply(lambda row: row.rstrip())
 data['delivery_date_end'] = data['delivery_date_end'].apply(lambda row: row.rstrip())
+
+# print(data)
+# xa = data[data['delivery_date_end'] == ""]
+# print(xa[['picking_finish_at', 'delivery_date_end', 'number']])
 
 data['picking_finish_at'] = data['picking_finish_at'].apply(lambda row: datetime.datetime.strptime(row, "%Y-%m-%d"))
 data['delivery_date_end'] = data['delivery_date_end'].apply(lambda row: datetime.datetime.strptime(row, "%Y-%m-%d"))
@@ -112,13 +128,13 @@ data = data[data.order_state != 'canceled']
 # table j-1
 yesterday = date.today() - datetime.timedelta(days=1)
 yesterday = str(yesterday)
-#yesterday = "2022-07-29"  # Utiliser pour le Weekend
+#yesterday = "2023-02-06"  # Utiliser pour le Weekend
 
 table_j_1 = data.loc[(data['delivery_date_end'] == yesterday)]
 table_j_1 = table_j_1[['delivery_date_end', 'number',
                        'order_state', 'payment_method',
                        'store_internal_name', 'vendor_name', 'Total']]
-
+print(table_j_1)
 table_j_1.rename(columns={'store_internal_name': 'Magasin'}, inplace=True)
 
 ##  jusqu'a j-1
@@ -137,6 +153,9 @@ table_4 = pd.DataFrame(columns=["E-Takada CA : {}".format(yesterday)])
 table_j_1['delivery_date_end'] = table_j_1['delivery_date_end'].astype(str)
 table_j_1 = table_j_1.reset_index(drop=True)
 # Export Data
+table_j_1.index = table_j_1.index + 1
+
+print(table_j_1)
 print(Etakada_df_1)
 
 df =  Etakada_df_1.reset_index().pivot('Magasin', 'payment_method', 'Total').fillna(0)
@@ -144,7 +163,7 @@ df =  Etakada_df_1.reset_index().pivot('Magasin', 'payment_method', 'Total').fil
 x1 = len(table_j_1) + 5
 
 #with pd.ExcelWriter("C:/Users/elmaa/OneDrive/Bureau/rapport_livraison/Livraison_rapport.xlsx") as writer:
-with pd.ExcelWriter("C:/Users/LAMIA/Desktop/rapport_versement/Versement_rapport.xls") as writer:
+with pd.ExcelWriter("C:/Users/LAMIA/Desktop/rapport_versement/Versement_rapport {}.xls".format(yesterday)) as writer:
     table_4.to_excel(writer , sheet_name="Sheet1", startcol=0)
     table_j_1.to_excel(writer , sheet_name="Sheet1", startrow=2, startcol=1)
     try:

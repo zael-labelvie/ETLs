@@ -17,7 +17,7 @@ def get_packaged_files_path():
     if getattr(sys, 'frozen', False):
         path = sys._MEIPASS  # pylint: disable=no-member
     else:
-        path = '..'
+        path = '.'
 
     return path
 

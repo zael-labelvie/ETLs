@@ -13,12 +13,13 @@ import pandas as pd
 ########################################################################################################## SEND EMAIL
 yesterday = date.today() - datetime.timedelta(days=1)
 yesterday = str(yesterday)
-#yesterday = "2022-07-29"
+#yesterday = "2023-02-05"
 
 
 def send():
     fromaddr = "z.elmaataoui@labelvie.ma"
-    toaddr ="a.benkira@labelvie.ma","m.safouane@labelvie.ma","h.ramzi@labelvie.ma","l.sadiki@labelvie.ma","o.jdar@labelvie.ma","a.mekouar@labelvie.ma","a.azzal-digiup@labelvie.ma"
+    toaddr ="m.safouane@labelvie.ma","h.ramzi@labelvie.ma","l.sadiki@labelvie.ma","o.jdar@labelvie.ma","a.mekouar@labelvie.ma","a.azzal-digiup@labelvie.ma","panoramique.respmag@labelvie.ma","anfaplace.respmag@labelvie.ma","m.filali@labelvie.ma","a.bouhout@labelvie.ma","t.soumane@labelvie.ma", "r.benbada@labelvie.ma", "m.najim@labelvie.ma", "r.aoua@labelvie.ma", "s.rabouh@labelvie.ma", "r.amezoug@labelvie.ma","k.houmaidy@labelvie.ma", "w.azizi@labelvie.ma", "ecommerce.1@labelvie.ma","m.sammama@labelvie.ma","m.lagzili@labelvie.ma","k.mehrat@labelvie.ma","s.elyassini@labelvie.ma","a.khatimy@labelvie.ma","o.erriahi@labelvie.ma","m.hamchach@labelvie.ma","k.ahzoum@labelvie.ma","r.ghouati@labelvie.ma","s.elmounadi@labelvie.ma","a.moutaouakkil@labelvie.ma", "n.faroukh@labelvie.ma"
+
     #toaddr = "a.azzal-digiup@labelvie.ma",
     msg = MIMEMultipart()
     msg['From'] = fromaddr
@@ -46,7 +47,7 @@ Zakariyae
     msg.attach(p)
     s = smtplib.SMTP('smtp.gmail.com', 587)
     s.starttls()
-    s.login(fromaddr, "Triwakof2022")
+    s.login(fromaddr, "Bouskoura2020!")
     text = msg.as_string()
     s.sendmail(fromaddr, toaddr, text)
     s.quit()

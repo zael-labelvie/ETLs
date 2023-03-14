@@ -24,6 +24,12 @@ dat = pd.read_csv(
     'https://redash-ro-live.bringo.ro/api/queries/23/results.csv?api_key=geCGwjb5UX3vj5cWnFpSlwG7guEZv7aYpfybRUnN')
 data = pd.DataFrame(dat)
 
+data = data[data.order_state != 'canceled']
+
+
+data1 = data[data['delivery_date_end'].isnull()]
+
+
 # delete order_test
 order_test = [1802, 1218, 605, 599, 592, 584, 581, 580, 578, 559, 1191, 1189, 1184, 1183, 1182, 1154, 1146, 1142, 1136,
               1133, 1077, 1075, 1068, 1067, 1066, 1065, 1064, 1063, 1062, 1059, 1057, 1054, 1052, 1049, 1048, 1047,
@@ -32,7 +38,7 @@ order_test = [1802, 1218, 605, 599, 592, 584, 581, 580, 578, 559, 1191, 1189, 11
               1060, 1218, 1191, 1184, 1183, 1182, 1154, 1148, 1146, 1142, 1133, 1134, 1136, 1137, 1138, 1077, 1075,
               1070, 1068, 1067, 1066, 1065, 1064, 1063, 1062, 1060, 1059, 1047, 1057, 1054, 1053, 1052, 1050, 1049,
               1048, 1045, 1044, 1043, 1042, 1041, 1040, 1039, 1035, 1033, 1032, 1031, 1016, 982, 983, 984, 1116, 1702,
-              1719]
+              1719,1850,1802,2154,2227,3100,3147]
 for i in order_test:
     data = data[data.number != i]
 
@@ -110,7 +116,9 @@ data['shipping_value'] = data['shipping_value'].astype(float)
 data['manipulation_value'] = data['manipulation_value'].astype(float)
 data['preparation_fee'] = data['preparation_fee'].astype(float)
 
+
 data['picking_finish_at'] = data.apply(lambda x: fx(x), axis=1)
+#data['delivery_date_end'] = data.apply(lambda x: Sx(x), axis=1)
 
 data['picking_finish_at'] = data['picking_finish_at'].apply(lambda row: row.replace(row[-8:], ""))
 data['delivery_date_end'] = data['delivery_date_end'].apply(lambda row: row.replace(row[-8:], ""))
@@ -118,24 +126,45 @@ data['delivery_date_end'] = data['delivery_date_end'].apply(lambda row: row.repl
 data['picking_finish_at'] = data['picking_finish_at'].apply(lambda row: row.rstrip())
 data['delivery_date_end'] = data['delivery_date_end'].apply(lambda row: row.rstrip())
 
+# table ne contient pas Delevry date == "canceled"
+data = data[data.order_state != 'canceled']
+data = data[data.order_state != 'paid']
+
 data['picking_finish_at'] = data['picking_finish_at'].apply(lambda row: datetime.datetime.strptime(row, "%Y-%m-%d"))
 data['delivery_date_end'] = data['delivery_date_end'].apply(lambda row: datetime.datetime.strptime(row, "%Y-%m-%d"))
 
-# data['Total'] = data['product_price_without_vat'] + data['preparation_fee'] + data['shipping_discount'] - data['original_shipping_amount'] - data['discount_total']
+# data['Total'] = data['product_price] + data['preparation_fee'] + data['shipping_discount'] - data['original_shipping_amount'] - data['discount_total']
 data['Total'] = data['amount_per_method']
-# table ne contient pas Delevry date == "canceled"
-data = data[data.order_state != 'canceled']
+
+def livraison(x):
+    if x['original_shipping_amount'] == 0 :
+        return 30
+    else:
+        return x['original_shipping_amount']
+
+def coupon_livraison(x):
+    if x['original_shipping_amount'] == 0 :
+        return 30
+    else:
+        return x['shipping_discount']
+
+data["livraison"] = data.apply(lambda row : livraison(row), axis=1)
+data["coupon_livraison"] =data.apply(lambda row : coupon_livraison(row), axis=1)
 
 # table j-1
 yesterday = date.today() - datetime.timedelta(days=1)
 yesterday = str(yesterday)
-#yesterday = "2022-07-29"  # Utiliser pour le Weekend
+#yesterday = "2023-02-10"  # Utiliser pour le Weekend
 table_j_1 = data.loc[(data['delivery_date_end'] == yesterday)]
 table_j_1 = table_j_1[['delivery_date_end', 'number',
                        'order_state', 'payment_method',
                        'store_internal_name', 'store_external_id', 'vendor_name',
                        'product_price', 'product_price_without_vat', 'vat', 'discount_total',
-                       'original_shipping_amount', 'shipping_discount', 'preparation_fee', 'Total']]
+                       "livraison", "coupon_livraison",'preparation_fee', 'Total']]
+
+print(table_j_1)
+
+
 
 ##  jusqu'a j-1
 df_jusqua_1 = data[data['delivery_date_end'] <= yesterday]
@@ -162,11 +191,12 @@ table_3 = pd.DataFrame(columns=["LabelVie CA Total"])
 table_4 = pd.DataFrame(columns=["E-Takada CA : {}".format(yesterday)])
 table_5 = pd.DataFrame(columns=["LabelVie CA : {}".format(yesterday)])
 one_line = pd.DataFrame(columns=None, data=None)
-print(table_j_1.info())
 table_j_1['delivery_date_end'] = table_j_1['delivery_date_end'].astype(str)
+
 # Rename colonne
-table_j_1.rename(columns={'discount_total': 'Value_of_coupon_incl_VAT', 'shipping_discount': 'Fee2_incl_VAT',
-                          'original_shipping_amount': ' Coupon_Service_incl_VAT', 'preparation_fee': 'Fee1_incl_VAT'},
+
+table_j_1.rename(columns={'discount_total': 'Value_of_coupon_incl_VAT', 'livraison': 'Fee2_incl_VAT',
+                          'coupon_livraison': ' Coupon_Service_incl_VAT', 'preparation_fee': 'Fee1_incl_VAT'},
                  inplace=True)
 
 table_j_1 = table_j_1.reset_index(drop=True)

@@ -13,12 +13,12 @@ import pandas as pd
 ########################################################################################################## SEND EMAIL
 yesterday = date.today() - datetime.timedelta(days=1)
 yesterday = str(yesterday)
-#yesterday = "2022-07-29"
+#yesterday = "2023-02-06"
 
 
 def send():
     fromaddr = "z.elmaataoui@labelvie.ma"
-    #toaddr = "a.benkira@labelvie.ma", "m.abid@labelvie.ma", "b.alfaidy@labelvie.ma", "h.tadlaoui@labelvie.ma", "l.ezzahraoui@labelvie.ma", "c.elannab@labelvie.ma", "a.ghayour@labelvie.ma"
+    toaddr = "h.ramzi@labelvie.ma", "m.abid@labelvie.ma", "b.alfaidy@labelvie.ma", "h.tadlaoui@labelvie.ma", "l.ezzahraoui@labelvie.ma", "c.elannab@labelvie.ma", "a.ghayour@labelvie.ma", "k.naciri@labelvie.ma","a.azzal-digiup@labelvie.ma "
     #toaddr ="a.azzal-digiup@labelvie.ma",
     msg = MIMEMultipart()
     msg['From'] = fromaddr
@@ -46,7 +46,7 @@ Zakariyae
     msg.attach(p)
     s = smtplib.SMTP('smtp.gmail.com', 587)
     s.starttls()
-    s.login(fromaddr, "Triwakof2022")
+    s.login(fromaddr, "Bouskoura2020!")
     text = msg.as_string()
     s.sendmail(fromaddr, toaddr, text)
     s.quit()
